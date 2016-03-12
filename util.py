@@ -5,6 +5,7 @@ Gearman Client Utils
 import errno
 import select as select_lib
 import time
+import sys
 
 from gearman.constants import DEFAULT_GEARMAN_PORT
 
@@ -61,6 +62,8 @@ def select(rlist, wlist, xlist, timeout=None):
         rd_list, wr_list, ex_list = select_lib.select(*select_args)
     except select_lib.error as exc:
         # Ignore interrupted system call, reraise anything else
+        print("Interrupted system call. Exiting - Gearman")
+        sys.exit()
         if exc[0] != errno.EINTR:
             raise
 
