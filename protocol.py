@@ -256,6 +256,7 @@ def parse_text_command(in_buffer):
     cmd_type = None
     cmd_args = None
     cmd_len = 0
+    in_buffer = in_buffer.decode()
     if '\n' not in in_buffer:
         return cmd_type, cmd_args, cmd_len
 
