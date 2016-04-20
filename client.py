@@ -69,6 +69,11 @@ class GearmanClient(GearmanConnectionManager):
         time_remaining = stopwatch.get_time_remaining()
         if wait_until_complete and bool(time_remaining != 0.0):
             processed_requests = self.wait_until_jobs_completed(processed_requests, poll_timeout=time_remaining)
+        else:
+            # Remove jobs from the rotating connection queue to avoid a leak
+            for current_request in processed_requests:
+                self.request_to_rotating_connection_queue.pop(current_request, None)
+
 
         return processed_requests
 
